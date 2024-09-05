@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Roles } from '@prisma/client';
 import * as argon2 from 'argon2';
 import { hash } from 'argon2';
-import { AuthDto } from 'src/auth/dto/auth.dto';
+import { AuthDto } from '../auth/dto/auth.dto';
 import { PrismaService } from '../prisma.service';
 import { ChangeEmailDto } from './dto/changeEmail.dto';
 import { ChangePasswordDto } from './dto/changePassword.dto';

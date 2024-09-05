@@ -7,8 +7,8 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { CurrentUser } from 'src/auth/decorators/user.decorator';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { CurrentUser } from '../auth/decorators/user.decorator';
 import { ChangeEmailDto } from './dto/changeEmail.dto';
 import { ChangePasswordDto } from './dto/changePassword.dto';
 import { UserDto } from './dto/user.dto';
