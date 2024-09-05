@@ -4,8 +4,7 @@
 	"builds": [
 		{
 			"src": "src/main.ts",
-			"use": "@vercel/node",
-			"commands": ["npm install", "npm run prisma:prepare", "npm run build"]
+			"use": "@vercel/node"
 		}
 	],
 	"routes": [
