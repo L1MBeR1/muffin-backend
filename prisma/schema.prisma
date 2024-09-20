@@ -94,8 +94,8 @@ model User {
 }
 
 enum Gender {
-  man
-  woman
+  male
+  female
 }
 
 model Category {

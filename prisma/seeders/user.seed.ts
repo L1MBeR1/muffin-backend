@@ -16,7 +16,7 @@ export default async function seedUsers(prisma: PrismaClient) {
 							: faker.internet.email().slice(0, 100),
 				phone: faker.phone.number().slice(0, 20),
 				password: await argon2.hash('password'),
-				gender: faker.helpers.arrayElement(['man', 'woman']) as Gender,
+				gender: faker.helpers.arrayElement(['male', 'female']) as Gender,
 				isBlocked: false,
 				createdAt: new Date(),
 				updatedAt: new Date(),
