@@ -23,7 +23,7 @@
 		"prisma:seed": "ts-node prisma/seed.ts",
 		"prisma:generate": "npx prisma generate",
 		"prisma:migrate": "npx prisma migrate dev",
-		"prisma:prepare": "npm run prisma:migrate && npm run prisma:seed",
+		"prisma:prepare": "npx prisma migrate deploy --force && npm run prisma:seed",
 		"vercel-build": "npm run prisma:prepare && npm run build"
 	},
 	"dependencies": {
