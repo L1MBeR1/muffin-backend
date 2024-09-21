@@ -18,11 +18,12 @@
 		"test:cov": "jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 		"test:e2e": "jest --config ./test/jest-e2e.json",
-		"prisma:clean": "ts-node prisma/clean.ts",
+		"prisma:clean": "npx prisma migrate reset --force",
 		"prisma:push": "npx prisma db push",
 		"prisma:seed": "ts-node prisma/seed.ts",
 		"prisma:generate": "npx prisma generate",
-		"prisma:prepare": "npm run prisma:generate && npm run prisma:seed",
+		"prisma:migrate": "npx prisma migrate dev",
+		"prisma:prepare": "npm run prisma:clean && npx prisma migrate deploy && npm run prisma:seed",
 		"vercel-build": "npm run prisma:prepare && npm run build"
 	},
 	"dependencies": {
