@@ -16,6 +16,8 @@ async function bootstrap() {
 		origin: process.env.FRONT_URL || '*',
 		credentials: true,
 		exposedHeaders: 'set-cookie',
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
 	});
 
 	await app.listen(4200);
