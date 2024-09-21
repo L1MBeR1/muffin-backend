@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
 
 dotenv.config();
-
+console.log(process.env.FRONT_URL);
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.setGlobalPrefix('api');
