@@ -18,21 +18,6 @@ async function bootstrap() {
 		exposedHeaders: 'set-cookie',
 	});
 
-	app.use((req, res, next) => {
-		res.header(
-			'Access-Control-Allow-Origin',
-			process.env.FRONT_URL || 'https://maffin.vercel.app',
-		);
-		res.header(
-			'Access-Control-Allow-Headers',
-			'Origin, X-Requested-With, Content-Type, Accept',
-		);
-		if (req.method === 'OPTIONS') {
-			return res.sendStatus(200);
-		}
-		next();
-	});
-
 	await app.listen(4200);
 }
 
