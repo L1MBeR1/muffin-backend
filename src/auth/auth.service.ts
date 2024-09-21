@@ -106,7 +106,7 @@ export class AuthService {
 			domain: process.env.DOMAIN,
 			expires: expiresIn,
 			secure: true,
-			sameSite: 'none',
+			sameSite: 'lax',
 		});
 	}
 
@@ -116,7 +116,7 @@ export class AuthService {
 			domain: process.env.DOMAIN,
 			expires: new Date(0),
 			secure: true,
-			sameSite: 'none',
+			sameSite: 'lax',
 		});
 	}
 }
