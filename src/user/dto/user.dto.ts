@@ -1,5 +1,5 @@
 import { Gender } from '@prisma/client';
-import { IsEnum, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class UserDto {
 	@IsOptional()
@@ -11,12 +11,8 @@ export class UserDto {
 	lastName?: string;
 
 	@IsOptional()
-	@IsString()
-	patronymic?: string;
-
-	@IsOptional()
-	@IsPhoneNumber(null, { message: 'Invalid phone number' })
-	phone?: string;
+	@IsDateString({}, { message: 'Invalid birth date' })
+	birthDate?: string;
 
 	@IsOptional()
 	@IsEnum(Gender, { message: 'Gender must be either man or woman' })

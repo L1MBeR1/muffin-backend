@@ -53,7 +53,7 @@ export class UserService {
 		});
 
 		if (!user) {
-			throw new BadRequestException('User not found');
+			return null;
 		}
 
 		const roleNames = user.roles.map(userRole => userRole.role.name);
@@ -110,7 +110,6 @@ export class UserService {
 				id: true,
 				firstName: true,
 				lastName: true,
-				patronymic: true,
 				phone: true,
 				gender: true,
 			},
@@ -152,7 +151,6 @@ export class UserService {
 				id: true,
 				firstName: true,
 				lastName: true,
-				patronymic: true,
 				phone: true,
 				gender: true,
 			},
@@ -177,7 +175,6 @@ export class UserService {
 				firstName: true,
 				lastName: true,
 				email: true,
-				patronymic: true,
 				phone: true,
 				gender: true,
 			},
