@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import seedBakeries from './seeders/bakeries.seed';
+import seedOrders from './seeders/orders.seed';
+import seedProducts from './seeders/products.seed';
 import seedRoles from './seeders/roles.seed';
 import seedUsers from './seeders/user.seed';
 
@@ -10,6 +13,11 @@ async function main() {
 
 		await seedUsers(prisma);
 
+		await seedProducts(prisma);
+
+		await seedBakeries(prisma);
+
+		await seedOrders(prisma);
 		console.log('Seeding completed successfully.');
 	} catch (error) {
 		console.error('Error seeding data:', error);
