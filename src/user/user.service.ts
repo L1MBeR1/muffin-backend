@@ -110,8 +110,8 @@ export class UserService {
 				id: true,
 				firstName: true,
 				lastName: true,
-				phone: true,
 				gender: true,
+				birthDate: true,
 			},
 		});
 	}
@@ -151,7 +151,7 @@ export class UserService {
 				id: true,
 				firstName: true,
 				lastName: true,
-				phone: true,
+				birthDate: true,
 				gender: true,
 			},
 		});
@@ -175,7 +175,7 @@ export class UserService {
 				firstName: true,
 				lastName: true,
 				email: true,
-				phone: true,
+				birthDate: true,
 				gender: true,
 			},
 		});

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
@@ -8,7 +8,7 @@ dotenv.config();
 console.log('Front URL:', process.env.FRONT_URL);
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create(AppModule);
 	app.setGlobalPrefix('api');
 	app.use(cookieParser());
 
