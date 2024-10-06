@@ -76,7 +76,7 @@ export class AuthService {
 		};
 
 		const accessToken = this.jwt.sign(data, {
-			expiresIn: '1h',
+			expiresIn: '7d',
 		});
 		const refreshToken = this.jwt.sign(data, {
 			expiresIn: '7d',
@@ -103,8 +103,8 @@ export class AuthService {
 			httpOnly: true,
 			domain: process.env.DOMAIN,
 			expires: expiresIn,
-			secure: true,
-			sameSite: 'none',
+			secure: false,
+			sameSite: 'lax',
 		});
 	}
 
@@ -113,8 +113,8 @@ export class AuthService {
 			httpOnly: true,
 			domain: process.env.DOMAIN,
 			expires: new Date(0),
-			secure: true,
-			sameSite: 'none',
+			secure: false,
+			sameSite: 'lax',
 		});
 	}
 }
