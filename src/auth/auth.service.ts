@@ -104,7 +104,7 @@ export class AuthService {
 			expires: expiresIn,
 			domain: process.env.DOMAIN,
 			secure: true,
-			sameSite: 'none',
+			sameSite: 'lax',
 			path: '/',
 		});
 	}
