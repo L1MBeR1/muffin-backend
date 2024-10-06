@@ -101,10 +101,10 @@ export class AuthService {
 		expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
 		res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
 			httpOnly: true,
-			domain: process.env.DOMAIN,
 			expires: expiresIn,
 			secure: false,
 			sameSite: 'lax',
+			path: '/',
 		});
 	}
 
