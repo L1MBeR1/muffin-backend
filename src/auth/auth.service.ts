@@ -103,8 +103,8 @@ export class AuthService {
 			httpOnly: true,
 			expires: expiresIn,
 			domain: process.env.DOMAIN,
-			secure: false,
-			sameSite: 'lax',
+			secure: true,
+			sameSite: 'none',
 			path: '/',
 		});
 	}
