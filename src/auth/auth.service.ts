@@ -103,7 +103,7 @@ export class AuthService {
 			httpOnly: true,
 			expires: expiresIn,
 			secure: false,
-			sameSite: 'lax',
+			sameSite: 'none',
 			path: '/',
 		});
 	}
