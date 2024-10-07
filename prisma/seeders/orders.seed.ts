@@ -12,6 +12,11 @@ export default async function seedOrders(prisma: PrismaClient) {
 		OrderStatus.assembling,
 		OrderStatus.delivery,
 		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
 		OrderStatus.cancelled,
 	];
 
@@ -49,6 +54,11 @@ export default async function seedOrders(prisma: PrismaClient) {
 				};
 			});
 
+			let paymentDate = null;
+			if (randomStatus === OrderStatus.completed) {
+				paymentDate = faker.date.past();
+			}
+
 			await prisma.order.create({
 				data: {
 					userId: user.id,
@@ -57,6 +67,7 @@ export default async function seedOrders(prisma: PrismaClient) {
 					isCart: false,
 					addressId: randomAddress?.id || null,
 					bakeryId: randomBakery?.id || null,
+					paidAt: paymentDate,
 					items: {
 						create: itemsData,
 					},
