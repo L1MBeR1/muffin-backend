@@ -9,6 +9,7 @@ import { verify } from 'argon2';
 import { Response } from 'express';
 import { UserService } from '../user/user.service';
 import { AuthDto } from './dto/auth.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
 		};
 	}
 
-	async register(dto: AuthDto) {
+	async register(dto: RegisterDto) {
 		const oldUser = await this.userService.getByEmail(dto.email);
 
 		if (oldUser) throw new BadRequestException('User already exists');
@@ -78,11 +79,14 @@ export class AuthService {
 		const accessToken = this.jwt.sign(data, {
 			expiresIn: '7d',
 		});
-		const refreshToken = this.jwt.sign(data, {
-			expiresIn: '7d',
-		});
+		// const refreshToken = this.jwt.sign(data, {
+		// 	expiresIn: '7d',
+		// });
 
-		return { accessToken, refreshToken };
+		return {
+			accessToken,
+			// refreshToken
+		};
 	}
 
 	private async validateUser(dto: AuthDto) {
@@ -96,26 +100,27 @@ export class AuthService {
 		return user;
 	}
 
-	addRefreshTokenToResponse(res: Response, refreshToken: string) {
-		const expiresIn = new Date();
-		expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
-		res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
-			httpOnly: true,
-			expires: expiresIn,
-			domain: process.env.DOMAIN,
-			secure: true,
-			sameSite: 'none',
-			path: '/',
-		});
-	}
+	// addRefreshTokenToResponse(res: Response, refreshToken: string) {
+	// 	const expiresIn = new Date();
+	// 	expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+	// 	res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
+	// 		httpOnly: true,
+	// 		expires: expiresIn,
+	// 		domain: process.env.DOMAIN,
+	// 		secure: true,
+	// 		sameSite: 'none',
+	// 		path: '/',
+	// 	});
+	// }
 
 	removeRefreshTokenToResponse(res: Response) {
 		res.cookie(this.REFRESH_TOKEN_NAME, '', {
 			httpOnly: true,
 			domain: process.env.DOMAIN,
 			expires: new Date(0),
-			secure: false,
-			sameSite: 'lax',
+			secure: true,
+			sameSite: 'none',
+			path: '/',
 		});
 	}
 }

@@ -7,6 +7,10 @@ export default async function seedOrders(prisma: PrismaClient) {
 	const addresses = await prisma.address.findMany();
 	const products = await prisma.product.findMany();
 	const statuses = [
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
 		OrderStatus.pending,
 		OrderStatus.processing,
 		OrderStatus.assembling,
@@ -49,6 +53,16 @@ export default async function seedOrders(prisma: PrismaClient) {
 				};
 			});
 
+			let paymentDate = null;
+			if (randomStatus === OrderStatus.completed) {
+				const orderDate = new Date();
+
+				const daysToAdd = faker.number.int({ min: 0, max: 1 });
+				orderDate.setDate(orderDate.getDate() + daysToAdd);
+
+				paymentDate = orderDate;
+			}
+
 			await prisma.order.create({
 				data: {
 					userId: user.id,
@@ -57,6 +71,7 @@ export default async function seedOrders(prisma: PrismaClient) {
 					isCart: false,
 					addressId: randomAddress?.id || null,
 					bakeryId: randomBakery?.id || null,
+					paidAt: paymentDate,
 					items: {
 						create: itemsData,
 					},

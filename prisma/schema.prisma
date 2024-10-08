@@ -190,6 +190,7 @@ model Order {
   bakeryId    Int?         @map("bakery_id")
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
+  paidAt      DateTime?    @map("paid_at") @db.Timestamp(0)
   completedAt DateTime?    @map("completed_at") @db.Timestamp(0)
 
   user    User        @relation(fields: [userId], references: [id])

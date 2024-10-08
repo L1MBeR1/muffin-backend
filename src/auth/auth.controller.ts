@@ -3,15 +3,14 @@ import {
 	Controller,
 	HttpCode,
 	Post,
-	Req,
 	Res,
-	UnauthorizedException,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
-import { Request, Response } from 'express';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,8 +20,11 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('login')
 	async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
-		const { refreshToken, ...response } = await this.authService.login(dto);
-		this.authService.addRefreshTokenToResponse(res, refreshToken);
+		const {
+			// refreshToken,
+			...response
+		} = await this.authService.login(dto);
+		// this.authService.addRefreshTokenToResponse(res, refreshToken);
 
 		return response;
 	}
@@ -31,35 +33,38 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('register')
 	async register(
-		@Body() dto: AuthDto,
+		@Body() dto: RegisterDto,
 		@Res({ passthrough: true }) res: Response,
 	) {
-		const { refreshToken, ...response } = await this.authService.register(dto);
-		this.authService.addRefreshTokenToResponse(res, refreshToken);
+		const {
+			// refreshToken,
+			...response
+		} = await this.authService.register(dto);
+		// this.authService.addRefreshTokenToResponse(res, refreshToken);
 		return response;
 	}
 
-	@HttpCode(200)
-	@Post('login/access-token')
-	async getNewTokens(
-		@Req() req: Request,
-		@Res({ passthrough: true }) res: Response,
-	) {
-		const refreshTokenFromCookie =
-			req.cookies[this.authService.REFRESH_TOKEN_NAME];
-		if (!refreshTokenFromCookie) {
-			this.authService.removeRefreshTokenToResponse(res);
-			throw new UnauthorizedException('Refresh token no passed');
-		}
+	// @HttpCode(200)
+	// @Post('login/access-token')
+	// async getNewTokens(
+	// 	@Req() req: Request,
+	// 	@Res({ passthrough: true }) res: Response,
+	// ) {
+	// 	const refreshTokenFromCookie =
+	// 		req.cookies[this.authService.REFRESH_TOKEN_NAME];
+	// 	if (!refreshTokenFromCookie) {
+	// 		this.authService.removeRefreshTokenToResponse(res);
+	// 		throw new UnauthorizedException('Refresh token no passed');
+	// 	}
 
-		const { refreshToken, ...response } = await this.authService.getNewTokens(
-			refreshTokenFromCookie,
-		);
+	// 	const { refreshToken, ...response } = await this.authService.getNewTokens(
+	// 		refreshTokenFromCookie,
+	// 	);
 
-		this.authService.addRefreshTokenToResponse(res, refreshToken);
+	// 	this.authService.addRefreshTokenToResponse(res, refreshToken);
 
-		return response;
-	}
+	// 	return response;
+	// }
 
 	@HttpCode(200)
 	@Post('logout')

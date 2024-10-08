@@ -1,5 +1,5 @@
 import { IsString, MinLength } from 'class-validator';
-import { MatchPasswords } from '../validators/matchPassword.validator';
+import { MatchPasswords } from '../../validators/matchPassword.validator';
 
 export class ChangePasswordDto {
 	@IsString()
