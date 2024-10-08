@@ -6,56 +6,68 @@ import { GetProductsWithOrdersDto } from './dto/getProductWithOriders.dto';
 export class ProductService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	async getAllProductsForSelect() {
+		const products = await this.prisma.product.findMany({
+			select: {
+				id: true,
+				name: true,
+			},
+		});
+
+		return products;
+	}
+
 	async getProductsWithOrders(dto: GetProductsWithOrdersDto) {
 		const { startDate, endDate, productId } = dto;
 
-		const whereClause: any = {};
+		const whereCondition = productId ? { id: productId } : undefined;
 
-		if (startDate && endDate) {
-			whereClause.createdAt = {
-				gte: startDate,
-				lte: endDate,
-			};
-		}
-
-		if (productId) {
-			whereClause.items = {
-				some: {
-					productId: productId,
-				},
-			};
-		}
-
-		const products = await this.prisma.product.findMany({
-			where: productId ? { id: productId } : {},
-			include: {
+		const productOrders = await this.prisma.product.findMany({
+			where: whereCondition,
+			select: {
+				id: true,
+				name: true,
 				OrderItem: {
 					where: {
-						...whereClause,
 						order: {
-							isCart: false,
 							paidAt: {
 								not: null,
+								gte: startDate,
+								lte: endDate,
 							},
 						},
 					},
-					include: {
-						order: true,
+					select: {
+						order: {
+							select: {
+								id: true,
+								createdAt: true,
+								paidAt: true,
+							},
+						},
+						quantity: true,
+						price: true,
 					},
 				},
 			},
 		});
 
-		return products.map(product => ({
+		if (productOrders.length === 0) {
+			return null;
+		}
+
+		const result = productOrders.map(product => ({
 			id: product.id,
 			name: product.name,
-			orders: product.OrderItem.map(orderItem => ({
-				orderNumber: orderItem.order.id,
-				orderDate: orderItem.order.createdAt,
-				paymentDate: orderItem.order.paidAt,
-				quantity: orderItem.quantity,
-				totalPrice: orderItem.quantity * product.price.toNumber(),
+			orders: product.OrderItem.map(item => ({
+				orderNumber: item.order.id,
+				orderDate: item.order.createdAt,
+				paymentDate: item.order.paidAt || null,
+				quantity: item.quantity,
+				totalPrice: item.price.toNumber() * item.quantity,
 			})),
 		}));
+
+		return result;
 	}
 }

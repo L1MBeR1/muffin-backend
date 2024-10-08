@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Get,
 	HttpCode,
 	Post,
 	ValidationPipe,
@@ -21,5 +22,12 @@ export class ProductController {
 		dto: GetProductsWithOrdersDto,
 	) {
 		return this.productService.getProductsWithOrders(dto);
+	}
+
+	@HttpCode(200)
+	@Get('all/select')
+	@Auth('admin')
+	async getProductsSelect() {
+		return this.productService.getAllProductsForSelect();
 	}
 }
