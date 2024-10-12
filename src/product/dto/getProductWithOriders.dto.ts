@@ -1,6 +1,6 @@
 import { IsDateString, IsInt, IsOptional, IsPositive } from 'class-validator';
 
-export class GetProductsWithOrdersDto {
+export class SalesAnalysisDto {
 	@IsOptional()
 	@IsDateString({}, { message: 'Invalid start date' })
 	startDate?: string;

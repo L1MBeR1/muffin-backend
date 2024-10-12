@@ -12,6 +12,8 @@ model Bakery {
   address      String   @unique @db.Text
   phone        String   @unique @db.VarChar(20)
   openingHours String   @map("opening_hours") @db.VarChar(50)
+  latitude     Float?
+  longitude    Float?
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -110,6 +112,8 @@ model Address {
   address   String   @db.VarChar(255)
   city      String   @db.VarChar(100)
   state     String   @db.VarChar(100)
+  latitude  Float?
+  longitude Float?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
