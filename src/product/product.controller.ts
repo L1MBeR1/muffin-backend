@@ -35,6 +35,36 @@ export class ProductController {
 	}
 
 	@HttpCode(200)
+	@Post('bakeries')
+	@Auth('admin')
+	async getBakeriesAnalysis(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getBakeriesWithOrderCount(dto);
+	}
+
+	@HttpCode(200)
+	@Post('chart')
+	@Auth('admin')
+	async getCharyAnalysis(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getOrderCountPerDay(dto);
+	}
+
+	@HttpCode(200)
+	@Post('coordinates')
+	@Auth('admin')
+	async getCustomerCoordinates(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getCustomerCoordinatesByProductAndDate(dto);
+	}
+
+	@HttpCode(200)
 	@Get('all/select')
 	@Auth('admin')
 	async getProductsSelect() {

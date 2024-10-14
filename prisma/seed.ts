@@ -18,9 +18,10 @@ async function main() {
 
 		await seedBakeries(prisma);
 
+		await seedAddresses(prisma);
+
 		await seedOrders(prisma);
 
-		await seedAddresses(prisma);
 		console.log('Seeding completed successfully.');
 	} catch (error) {
 		console.error('Error seeding data:', error);

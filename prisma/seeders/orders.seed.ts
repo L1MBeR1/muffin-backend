@@ -4,7 +4,7 @@ import { OrderStatus, PrismaClient } from '@prisma/client';
 function getRandomDateWithinSixMonths() {
 	const now = new Date();
 	const pastDate = new Date();
-	pastDate.setMonth(now.getMonth() - 6);
+	pastDate.setMonth(now.getMonth() - 3);
 
 	const randomTime = faker.number.int({
 		min: pastDate.getTime(),
@@ -16,9 +16,10 @@ function getRandomDateWithinSixMonths() {
 export default async function seedOrders(prisma: PrismaClient) {
 	const users = await prisma.user.findMany();
 	const bakeries = await prisma.bakery.findMany();
-	const addresses = await prisma.address.findMany();
 	const products = await prisma.product.findMany();
 	const statuses = [
+		OrderStatus.completed,
+		OrderStatus.completed,
 		OrderStatus.completed,
 		OrderStatus.completed,
 		OrderStatus.completed,
@@ -36,12 +37,18 @@ export default async function seedOrders(prisma: PrismaClient) {
 	];
 
 	for (const user of users) {
-		for (let i = 0; i < 2; i++) {
+		const userAddresses = await prisma.address.findMany({
+			where: { userId: user.id },
+		});
+
+		if (userAddresses.length === 0) continue;
+		const orderCount = faker.number.int({ min: 9, max: 10 });
+
+		for (let i = 0; i < orderCount; i++) {
+			const randomAddress =
+				userAddresses[Math.floor(Math.random() * userAddresses.length)];
 			const randomBakery =
 				bakeries[Math.floor(Math.random() * bakeries.length)];
-			const randomAddress = addresses.find(
-				address => address.userId === user.id,
-			);
 			const randomStatus =
 				statuses[Math.floor(Math.random() * statuses.length)];
 

@@ -4,7 +4,7 @@ import * as argon2 from 'argon2';
 
 export default async function seedUsers(prisma: PrismaClient) {
 	const users = await Promise.all(
-		Array.from({ length: 15 }).map(async (_, index) => {
+		Array.from({ length: 30 }).map(async (_, index) => {
 			const userData = {
 				firstName: faker.person.firstName().slice(0, 50),
 				lastName: faker.person.lastName().slice(0, 50),
