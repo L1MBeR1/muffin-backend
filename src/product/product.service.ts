@@ -66,6 +66,7 @@ export class ProductService {
 		) {
 			return null;
 		}
+
 		const result = productOrders
 			.filter(product => product.OrderItem.length > 0)
 			.map(product => ({
@@ -77,8 +78,13 @@ export class ProductService {
 					paymentDate: item.order.paidAt || null,
 					quantity: item.quantity,
 					totalPrice: item.price.toNumber() * item.quantity,
-				})),
-			}));
+				})).sort((a, b) =>
+					a.paymentDate && b.paymentDate
+						? a.paymentDate.getTime() - b.paymentDate.getTime()
+						: 0,
+				),
+			}))
+			.sort((a, b) => a.name.localeCompare(b.name));
 
 		return result.length > 0 ? result : null;
 	}

@@ -8,7 +8,7 @@ export default async function seedAddresses(prisma: PrismaClient) {
 		users.map(async user => {
 			const userAddresses = [];
 
-			for (let i = 0; i < 8; i++) {
+			for (let i = 0; i < 10; i++) {
 				const latitude = faker.location.latitude({ min: 55.74, max: 55.77 });
 				const longitude = faker.location.longitude({ min: 37.58, max: 37.65 });
 

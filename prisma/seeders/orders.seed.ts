@@ -42,7 +42,7 @@ export default async function seedOrders(prisma: PrismaClient) {
 		});
 
 		if (userAddresses.length === 0) continue;
-		const orderCount = faker.number.int({ min: 9, max: 10 });
+		const orderCount = faker.number.int({ min: 8, max: 16 });
 
 		for (let i = 0; i < orderCount; i++) {
 			const randomAddress =

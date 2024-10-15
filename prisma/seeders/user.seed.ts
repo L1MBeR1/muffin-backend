@@ -4,7 +4,7 @@ import * as argon2 from 'argon2';
 
 export default async function seedUsers(prisma: PrismaClient) {
 	const users = await Promise.all(
-		Array.from({ length: 30 }).map(async (_, index) => {
+		Array.from({ length: 40 }).map(async (_, index) => {
 			const userData = {
 				firstName: faker.person.firstName().slice(0, 50),
 				lastName: faker.person.lastName().slice(0, 50),
@@ -18,11 +18,11 @@ export default async function seedUsers(prisma: PrismaClient) {
 				password: await argon2.hash('password'),
 				birthDate: faker.helpers.maybe(
 					() => faker.date.birthdate({ min: 14, max: 60, mode: 'age' }),
-					{ probability: 0.8 },
+					{ probability: 0.9 },
 				),
 				gender: faker.helpers.maybe(
 					() => faker.helpers.arrayElement(['male', 'female']) as Gender,
-					{ probability: 0.8 },
+					{ probability: 0.9 },
 				),
 				isBlocked: false,
 				createdAt: new Date(),
