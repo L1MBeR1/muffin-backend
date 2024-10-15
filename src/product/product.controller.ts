@@ -7,7 +7,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { GetProductsWithOrdersDto } from './dto/getProductWithOriders.dto';
+import { SalesAnalysisDto } from './dto/getProductWithOriders.dto';
 import { ProductService } from './product.service';
 
 @Controller('product')
@@ -19,9 +19,49 @@ export class ProductController {
 	@Auth('admin')
 	async getProductsWithOrders(
 		@Body(new ValidationPipe({ transform: true }))
-		dto: GetProductsWithOrdersDto,
+		dto: SalesAnalysisDto,
 	) {
 		return this.productService.getProductsWithOrders(dto);
+	}
+
+	@HttpCode(200)
+	@Post('buyers')
+	@Auth('admin')
+	async getBuyersAnalysis(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getCustomerDataForCharts(dto);
+	}
+
+	@HttpCode(200)
+	@Post('bakeries')
+	@Auth('admin')
+	async getBakeriesAnalysis(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getBakeriesWithOrderCount(dto);
+	}
+
+	@HttpCode(200)
+	@Post('chart')
+	@Auth('admin')
+	async getCharyAnalysis(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getOrderCountPerDay(dto);
+	}
+
+	@HttpCode(200)
+	@Post('coordinates')
+	@Auth('admin')
+	async getCustomerCoordinates(
+		@Body(new ValidationPipe({ transform: true }))
+		dto: SalesAnalysisDto,
+	) {
+		return this.productService.getCustomerCoordinatesByProductAndDate(dto);
 	}
 
 	@HttpCode(200)

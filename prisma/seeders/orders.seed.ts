@@ -1,12 +1,29 @@
 import { faker } from '@faker-js/faker';
 import { OrderStatus, PrismaClient } from '@prisma/client';
 
+function getRandomDateWithinSixMonths() {
+	const now = new Date();
+	const pastDate = new Date();
+	pastDate.setMonth(now.getMonth() - 3);
+
+	const randomTime = faker.number.int({
+		min: pastDate.getTime(),
+		max: now.getTime(),
+	});
+	return new Date(randomTime);
+}
+
 export default async function seedOrders(prisma: PrismaClient) {
 	const users = await prisma.user.findMany();
 	const bakeries = await prisma.bakery.findMany();
-	const addresses = await prisma.address.findMany();
 	const products = await prisma.product.findMany();
 	const statuses = [
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
+		OrderStatus.completed,
 		OrderStatus.completed,
 		OrderStatus.completed,
 		OrderStatus.completed,
@@ -20,12 +37,18 @@ export default async function seedOrders(prisma: PrismaClient) {
 	];
 
 	for (const user of users) {
-		for (let i = 0; i < 2; i++) {
+		const userAddresses = await prisma.address.findMany({
+			where: { userId: user.id },
+		});
+
+		if (userAddresses.length === 0) continue;
+		const orderCount = faker.number.int({ min: 8, max: 16 });
+
+		for (let i = 0; i < orderCount; i++) {
+			const randomAddress =
+				userAddresses[Math.floor(Math.random() * userAddresses.length)];
 			const randomBakery =
 				bakeries[Math.floor(Math.random() * bakeries.length)];
-			const randomAddress = addresses.find(
-				address => address.userId === user.id,
-			);
 			const randomStatus =
 				statuses[Math.floor(Math.random() * statuses.length)];
 
@@ -53,14 +76,15 @@ export default async function seedOrders(prisma: PrismaClient) {
 				};
 			});
 
+			const createdAt = getRandomDateWithinSixMonths();
 			let paymentDate = null;
+
 			if (randomStatus === OrderStatus.completed) {
-				const orderDate = new Date();
+				paymentDate = new Date(createdAt);
 
-				const daysToAdd = faker.number.int({ min: 0, max: 1 });
-				orderDate.setDate(orderDate.getDate() + daysToAdd);
-
-				paymentDate = orderDate;
+				if (faker.datatype.boolean()) {
+					paymentDate.setDate(paymentDate.getDate() + 1);
+				}
 			}
 
 			await prisma.order.create({
@@ -71,6 +95,7 @@ export default async function seedOrders(prisma: PrismaClient) {
 					isCart: false,
 					addressId: randomAddress?.id || null,
 					bakeryId: randomBakery?.id || null,
+					createdAt,
 					paidAt: paymentDate,
 					items: {
 						create: itemsData,
